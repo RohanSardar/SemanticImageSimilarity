@@ -1,0 +1,15 @@
+__pycache__
+.venv
+.git
+.gitignore
+*.jpg
+*.jpeg
+*.png
+test.py
+qdrant_data
+qdrant_setup.py
+search.py
+Dockerfile
+docker-compose.yml
+README.md
+task.md

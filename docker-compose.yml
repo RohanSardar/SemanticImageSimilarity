@@ -1,0 +1,46 @@
+services:
+  qdrant:
+    image: qdrant/qdrant
+    container_name: qdrant_db
+    ports:
+      - "6333:6333"
+    volumes:
+      - ./qdrant_data:/qdrant/storage
+
+  backend:
+    build: .
+    container_name: search_backend
+    command: python -m uvicorn api:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    environment:
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+    depends_on:
+      - qdrant
+    volumes:
+      # Mount data folder 
+      - C:/Users/rohan/Downloads/unsplash/data/train:/data/images:ro
+    # For GPU support 
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+
+  frontend:
+    build: .
+    container_name: search_frontend
+    command: python -m streamlit run app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://backend:8000
+      - IMAGES_DIR=/data/images
+    depends_on:
+      - backend
+    volumes:
+      # Mount data folder 
+      - C:/Users/rohan/Downloads/unsplash/data/train:/data/images:ro

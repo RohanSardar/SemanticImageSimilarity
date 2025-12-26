@@ -1,0 +1,15 @@
+--extra-index-url https://download.pytorch.org/whl/cu130
+
+fastapi
+uvicorn
+python-multipart
+streamlit
+torch
+torchvision
+qdrant-client
+pydantic
+requests
+git+https://github.com/openai/CLIP.git
+matplotlib
+tqdm
+Pillow
